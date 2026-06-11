@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+:root {
+  --background: #06060c;
+  --foreground: #fafafa;
+  --cyan: #00d1d1;
+  --cyan-dim: #0891b2;
+  --magenta: #a855f7;
+  --surface: rgba(255, 255, 255, 0.07);
+  --surface-border: rgba(255, 255, 255, 0.12);
+  --glow-cyan: 0 0 40px rgba(34, 211, 238, 0.35);
+  --glow-magenta: 0 0 60px rgba(168, 85, 247, 0.25);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-cyan: var(--cyan);
+  --color-magenta: var(--magenta);
+  --color-surface: var(--surface);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-space-grotesk);
+  --font-family-sans: var(--font-inter), system-ui, sans-serif;
+  --font-family-display: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.3);
+  color: #fff;
+}
+
+.mesh-bg {
+  background: var(--background);
+}
+
+.section-mesh {
+  background: var(--background);
+}
+
+.section-surface {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.about-photo {
+  object-fit: cover;
+  aspect-ratio: 4 / 5;
+}
+
+.hero-avatar {
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  -webkit-mask-image: radial-gradient(
+    ellipse 82% 88% at 50% 40%,
+    #000 60%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 82% 88% at 50% 40%,
+    #000 60%,
+    transparent 100%
+  );
+  filter: drop-shadow(0 0 40px rgba(0, 209, 209, 0.35));
+}
+
+.hero-text-panel {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .hero-text-panel {
+    max-width: min(22vw, 26rem);
+    margin-inline: 0;
+  }
+}
+
+@media (min-width: 1536px) {
+  .hero-text-panel {
+    max-width: min(20vw, 30rem);
+  }
+}
+
+/* Animated 3D avatar GIF — blends into pure-black hero */
+.hero-avatar-3d {
+  transform-style: preserve-3d;
+}
+
+.hero-avatar-gif {
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 45px rgba(0, 209, 209, 0.4));
+}
+
+.grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+.glow-text {
+  text-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
+}
+
+.glow-cyan {
+  box-shadow: var(--glow-cyan);
+}
+
+.glow-border {
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+}
+
+.glass-card {
+  border: 1px solid var(--surface-border);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.09) 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.ghost-text {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
+  color: transparent;
+}
+
+.section-padding {
+  @apply px-5 py-20 sm:px-8 sm:py-24 md:px-12 md:py-28 lg:px-16 lg:py-32 xl:px-20;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
