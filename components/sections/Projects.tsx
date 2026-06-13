@@ -1,49 +1,64 @@
 "use client";
 
-import Image from "next/image";
-import { motion } from "framer-motion";
 import { projects } from "@/content/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { SectionAmbient } from "@/components/ui/SectionAmbient";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 export function Projects() {
   return (
-    <section id="work" className="section-padding relative overflow-hidden">
-      <SectionAmbient variant="cyan" />
+    <section id="work" className="section-pad relative overflow-hidden" style={{ background: "var(--bg)" }}>
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(245,158,11,0.2), transparent)" }} />
+      <div className="pointer-events-none absolute right-0 bottom-0 h-96 w-96 orb orb-indigo opacity-20" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <SectionHeading label="Portfolio" title="Featured Work" />
+        <SectionHeading num="04" label="Portfolio" title="Featured Work" />
 
+        {/* Dean's roll callout */}
         <RevealOnScroll>
-          <motion.div
-            className="mb-8 flex items-center gap-4 rounded-2xl border border-[#00d1d1]/25 bg-[#00d1d1]/10 p-4 shadow-[0_0_30px_rgba(0,209,209,0.08)]"
-            whileHover={{ borderColor: "rgba(0,209,209,0.45)" }}
+          <div
+            className="mb-10 flex items-center gap-4 rounded-xl p-4"
+            style={{
+              background: "rgba(245,158,11,0.06)",
+              border: "1px solid rgba(245,158,11,0.2)",
+            }}
           >
-            <Image
-              src="/assets/accent-nft-coding.gif"
-              alt=""
-              width={48}
-              height={48}
-              unoptimized
-              className="rounded-lg"
-              aria-hidden
-            />
-            <p className="text-sm text-zinc-200">
-              <span className="font-medium text-[#00d1d1]">Dean&apos;s Honour Roll</span>{" "}
-              — 4 consecutive terms at Humber College
-            </p>
-          </motion.div>
+            <span className="text-xl">🏆</span>
+            <div>
+              <p className="font-display text-sm font-bold" style={{ color: "var(--fg)" }}>
+                Dean&apos;s Honour Roll — 4 consecutive terms
+              </p>
+              <p className="font-mono text-xs" style={{ color: "var(--fg-dim)" }}>
+                Humber College, Toronto · Jan 2023 – Aug 2024
+              </p>
+            </div>
+          </div>
         </RevealOnScroll>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        {/* Featured projects — each gets its own full-width row */}
+        <div className="flex flex-col gap-6">
           {projects.map((project, i) => (
             <RevealOnScroll key={project.title} delay={i * 0.1}>
               <ProjectCard {...project} />
             </RevealOnScroll>
           ))}
         </div>
+
+        {/* No links note */}
+        <RevealOnScroll delay={0.2}>
+          <p className="mt-8 text-center font-mono text-xs" style={{ color: "var(--fg-dim)" }}>
+            More projects on{" "}
+            <a
+              href="https://github.com/nameisdarshil"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors"
+              style={{ color: "var(--indigo-bright)" }}
+            >
+              GitHub ↗
+            </a>
+          </p>
+        </RevealOnScroll>
       </div>
     </section>
   );

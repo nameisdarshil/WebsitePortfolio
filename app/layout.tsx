@@ -1,21 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Preloader } from "@/components/Preloader";
 import { siteConfig, summary } from "@/content/site";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const siteUrl = "https://darshilshah.dev";
 
@@ -26,17 +13,7 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: summary,
-  keywords: [
-    "Darshil Shah",
-    "Frontend Developer",
-    "React",
-    "MERN Stack",
-    "AWS",
-    "Portfolio",
-    "Web Developer",
-    "Toronto",
-    "Ahmedabad",
-  ],
+  keywords: ["Darshil Shah","Frontend Developer","React","MERN Stack","AWS","Portfolio"],
   authors: [{ name: siteConfig.name, url: siteUrl }],
   creator: siteConfig.name,
   openGraph: {
@@ -46,59 +23,23 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} | ${siteConfig.title}`,
     description: summary,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: "/assets/headshot.png",
-        width: 800,
-        height: 800,
-        alt: `${siteConfig.name} — ${siteConfig.title}`,
-      },
-    ],
+    images: [{ url: "/assets/headshot.png", width: 800, height: 800, alt: siteConfig.name }],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: `${siteConfig.name} | ${siteConfig.title}`,
-    description: summary,
-    images: ["/assets/headshot.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: siteConfig.name,
-  jobTitle: siteConfig.title,
-  email: siteConfig.email,
-  url: siteUrl,
-  sameAs: [siteConfig.linkedin, siteConfig.github],
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Ahmedabad",
-    addressRegion: "Gujarat",
-    addressCountry: "IN",
-  },
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en">
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
       </head>
-      <body className="mesh-bg min-h-screen font-sans antialiased">
+      <body className="min-h-screen font-sans antialiased body-root">
         <Preloader />
-        <div className="grain-overlay" aria-hidden />
+        <div className="grain" aria-hidden />
+        <div className="scanlines" aria-hidden />
         <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
