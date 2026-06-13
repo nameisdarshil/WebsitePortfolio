@@ -72,13 +72,13 @@ export function Hero() {
         aria-hidden
       />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-5 pt-20 pb-16 sm:px-8 lg:grid-cols-[55%_45%] lg:gap-8 lg:px-12 lg:pt-0 lg:pb-0">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-8 px-5 pt-28 pb-16 sm:px-8 sm:pt-32 lg:grid-cols-[55%_45%] lg:items-center lg:gap-8 lg:px-12 lg:pt-0 lg:pb-0">
 
         {/* ── Left: text ── */}
         <div>
           {/* Availability badge */}
           <motion.div
-            className="mb-8 inline-flex items-center gap-2 rounded-full px-3 py-1.5"
+            className="mb-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 sm:mb-8"
             style={{ border: "1px solid rgba(99,102,241,0.25)", background: "rgba(99,102,241,0.08)" }}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -135,7 +135,7 @@ export function Hero() {
 
           {/* Stats row */}
           <motion.div
-            className="mt-10 flex flex-wrap gap-8"
+            className="mt-8 grid grid-cols-3 gap-4 sm:mt-10 sm:flex sm:flex-wrap sm:gap-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.75 }}
