@@ -221,14 +221,17 @@ export function Hero() {
             />
 
             <Image
-              src="/assets/hero-avatar.gif"
+              src="/assets/avatar-3d.png"
               alt="Darshil Shah 3D avatar"
               width={600}
               height={600}
               priority
-              unoptimized
-              className="h-auto w-[min(72vw,340px)] sm:w-[min(60vw,380px)] lg:w-[min(38vw,440px)] xl:w-[min(36vw,480px)]"
-              style={{ mixBlendMode: "screen", filter: "drop-shadow(0 0 50px rgba(99,102,241,0.5))", display: "block" }}
+              className="h-auto w-[min(72vw,300px)] sm:w-[min(60vw,340px)] lg:w-[min(38vw,400px)] xl:w-[min(36vw,440px)]"
+              style={{
+                mixBlendMode: "screen",
+                filter: "drop-shadow(0 0 50px rgba(99,102,241,0.5))",
+                display: "block",
+              }}
             />
 
             {/* Floating card — location */}
