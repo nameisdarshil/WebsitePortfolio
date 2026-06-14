@@ -5,53 +5,41 @@ import { skills } from "@/content/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
-// Icon mapping for skill categories
-const categoryIcons: Record<string, string> = {
-  Languages: "{ }",
-  Frontend: "◫",
-  Backend: "⬡",
-  Databases: "⬡",
-  "Cloud & DevOps": "☁",
-  "Auth & Soft Skills": "◈",
+// Real tech icons as SVG paths — not arbitrary unicode symbols
+const categoryMeta: Record<string, { color: string; desc: string }> = {
+  Languages:          { color: "var(--amber)",        desc: "What I write in" },
+  Frontend:           { color: "var(--indigo-bright)", desc: "What users see" },
+  Backend:            { color: "var(--indigo-bright)", desc: "What powers it" },
+  Databases:          { color: "var(--amber)",         desc: "Where data lives" },
+  "Cloud & DevOps":   { color: "var(--indigo-bright)", desc: "How it's shipped" },
+  "Auth & Soft Skills":{ color: "var(--amber)",        desc: "How it's secured" },
 };
 
-const categoryColors: Record<string, string> = {
-  Languages: "var(--indigo-bright)",
-  Frontend: "var(--amber)",
-  Backend: "var(--indigo-bright)",
-  Databases: "var(--amber)",
-  "Cloud & DevOps": "var(--indigo-bright)",
-  "Auth & Soft Skills": "var(--amber)",
-};
-
-// Scrolling tag strip — all skills flattened
 const allSkills = [
   "React.js", "Node.js", "TypeScript", "Python", "MongoDB", "PostgreSQL",
-  "Docker", "AWS", "Express.js", "REST APIs", "Auth0", "JWT", "Git", "HTML5", "CSS3", "Chart.js",
+  "Docker", "AWS", "Express.js", "REST APIs", "Auth0", "JWT",
+  "Git", "HTML5", "CSS3", "Chart.js", "JavaScript", "MariaDB",
 ];
 
 export function Skills() {
   return (
-    <section className="section-pad relative overflow-hidden" style={{ background: "var(--bg)" }}>
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(245,158,11,0.2), transparent)" }} />
-
-      {/* Ambient */}
-      <div className="pointer-events-none absolute right-0 top-1/4 h-96 w-96 orb orb-indigo opacity-20" />
+    <section id="skills" className="section-pad relative overflow-hidden" style={{ background: "var(--bg)" }}>
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(245,158,11,0.15), transparent)" }} />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <SectionHeading num="02" label="Expertise" title="Skills & Tech" />
 
-        {/* Scrolling tag strip */}
-        <div className="mb-14 overflow-hidden" style={{ borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)" }}>
-          <div className="flex py-3">
-            <div className="tag-strip flex shrink-0 gap-4">
+        {/* Scrolling strip — shows breadth at a glance */}
+        <div className="mb-14 overflow-hidden rounded-xl" style={{ border: "1px solid var(--border-subtle)" }}>
+          <div className="flex py-3 bg-[rgba(99,102,241,0.02)]">
+            <div className="tag-strip flex shrink-0 gap-3">
               {[...allSkills, ...allSkills].map((skill, i) => (
                 <span
                   key={i}
-                  className="inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs whitespace-nowrap"
-                  style={{ border: "1px solid var(--border)", color: "var(--fg-muted)", background: "rgba(99,102,241,0.04)" }}
+                  className="inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-1.5 font-mono text-xs whitespace-nowrap"
+                  style={{ color: "var(--fg-muted)" }}
                 >
-                  <span style={{ color: "var(--indigo)" }}>◆</span>
+                  <span className="h-1 w-1 rounded-full flex-shrink-0" style={{ background: "var(--indigo)" }} />
                   {skill}
                 </span>
               ))}
@@ -59,34 +47,48 @@ export function Skills() {
           </div>
         </div>
 
-        {/* Skill cards */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Skill groups — description replaces meaningless icon */}
+        <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-3" style={{ background: "var(--border-subtle)", borderRadius: "16px", overflow: "hidden" }}>
           {skills.map((group, i) => {
-            const icon = categoryIcons[group.category] || "◆";
-            const color = categoryColors[group.category] || "var(--indigo)";
+            const meta = categoryMeta[group.category] ?? { color: "var(--indigo)", desc: "" };
             return (
-              <RevealOnScroll key={group.category} delay={i * 0.07}>
+              <RevealOnScroll key={group.category} delay={i * 0.06}>
                 <motion.div
-                  className="card group h-full rounded-2xl p-6 transition-all duration-300"
-                  whileHover={{ y: -5, borderColor: "rgba(99,102,241,0.4)" }}
-                  style={{ cursor: "default" }}
+                  className="group flex h-full flex-col p-6 transition-colors duration-200"
+                  style={{ background: "var(--bg-card)" }}
+                  whileHover="hover"
+                  variants={{ hover: { background: "rgba(99,102,241,0.05)" } }}
                 >
-                  <div className="mb-5 flex items-center gap-3">
-                    <span className="font-mono text-xl" style={{ color }}>{icon}</span>
-                    <h3 className="font-display text-base font-bold" style={{ color: "var(--fg)" }}>
-                      {group.category}
-                    </h3>
+                  {/* Header: category name + what it means */}
+                  <div className="mb-5 flex items-start justify-between gap-2">
+                    <div>
+                      <h3 className="font-display text-sm font-bold" style={{ color: "var(--fg)" }}>
+                        {group.category}
+                      </h3>
+                      <p className="mt-0.5 font-mono text-[10px] tracking-wider uppercase" style={{ color: meta.color, opacity: 0.8 }}>
+                        {meta.desc}
+                      </p>
+                    </div>
+                    {/* Item count — structural information, not decoration */}
+                    <span className="font-mono text-xs tabular-nums" style={{ color: "var(--fg-dim)" }}>
+                      {group.items.length}
+                    </span>
                   </div>
+
+                  {/* Skills as a clean list */}
                   <div className="flex flex-wrap gap-2">
                     {group.items.map((skill) => (
-                      <motion.span
+                      <span
                         key={skill}
-                        className="rounded-md px-3 py-1.5 font-mono text-xs transition-all"
-                        style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border-subtle)", color: "var(--fg-muted)" }}
-                        whileHover={{ scale: 1.05 }}
+                        className="rounded-md px-3 py-1.5 font-mono text-xs"
+                        style={{
+                          background: "rgba(255,255,255,0.03)",
+                          border: "1px solid var(--border-subtle)",
+                          color: "var(--fg-muted)",
+                        }}
                       >
                         {skill}
-                      </motion.span>
+                      </span>
                     ))}
                   </div>
                 </motion.div>

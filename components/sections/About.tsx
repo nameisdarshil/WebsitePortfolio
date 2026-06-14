@@ -9,24 +9,26 @@ import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 export function About() {
   return (
     <section id="about" className="section-pad relative overflow-hidden" style={{ background: "var(--bg-surface)" }}>
-      {/* Subtle border top */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(99,102,241,0.3), transparent)" }} />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(99,102,241,0.2), transparent)" }} />
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <SectionHeading num="01" label="About Me" title="Who I Am" />
+        <SectionHeading num="01" label="About" title="Who I Am" />
 
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          {/* Photo */}
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
+          {/* Photo — cleaner frame treatment */}
           <RevealOnScroll>
-            <div className="relative mx-auto max-w-xs">
-              {/* Decorative corner lines */}
-              <div className="pointer-events-none absolute -top-3 -left-3 h-12 w-12" style={{ borderTop: "2px solid var(--indigo)", borderLeft: "2px solid var(--indigo)", opacity: 0.6 }} aria-hidden />
-              <div className="pointer-events-none absolute -right-3 -bottom-3 h-12 w-12" style={{ borderBottom: "2px solid var(--amber)", borderRight: "2px solid var(--amber)", opacity: 0.6 }} aria-hidden />
+            <div className="relative mx-auto max-w-sm">
+              {/* Single accent line — top-left only, not all four corners */}
+              <div
+                className="pointer-events-none absolute -top-4 -left-4 h-16 w-16 z-10"
+                style={{ borderTop: "2px solid var(--indigo)", borderLeft: "2px solid var(--indigo)", opacity: 0.5 }}
+                aria-hidden
+              />
 
-              <div className="photo-frame overflow-hidden rounded-xl">
+              <div className="overflow-hidden rounded-2xl" style={{ border: "1px solid var(--border)" }}>
                 <Image
                   src="/assets/headshot.png"
-                  alt="Darshil Shah professional headshot"
+                  alt="Darshil Shah"
                   width={480}
                   height={520}
                   className="block w-full object-cover object-center"
@@ -34,64 +36,74 @@ export function About() {
                 />
               </div>
 
-              {/* Cert badge */}
+              {/* AWS badge — positioned so it doesn't obscure the face */}
               <motion.div
-                className="absolute -right-5 -bottom-5 rounded-xl px-4 py-3"
+                className="absolute -right-4 bottom-6 rounded-xl px-4 py-3"
                 style={{
-                  background: "var(--bg-card)",
+                  background: "rgba(8,8,16,0.92)",
                   border: "1px solid rgba(245,158,11,0.3)",
-                  boxShadow: "0 0 24px rgba(245,158,11,0.12)",
+                  backdropFilter: "blur(12px)",
                 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.4 }}
               >
                 <p className="font-mono text-[10px] tracking-widest uppercase" style={{ color: "var(--amber)" }}>☁ AWS</p>
-                <p className="font-display text-sm font-bold" style={{ color: "var(--fg)" }}>Cloud Practitioner</p>
+                <p className="font-mono text-sm font-semibold" style={{ color: "var(--fg)" }}>Cloud Practitioner</p>
               </motion.div>
             </div>
           </RevealOnScroll>
 
-          {/* Text */}
-          <RevealOnScroll delay={0.15}>
-            <div className="space-y-7">
-              <p className="text-lg leading-relaxed" style={{ color: "var(--fg-muted)" }}>{summary}</p>
+          {/* Text — tighter, more readable */}
+          <RevealOnScroll delay={0.12}>
+            <div className="space-y-8">
+              {/* Summary — readable line-height */}
+              <p className="text-lg leading-[1.75]" style={{ color: "var(--fg-muted)" }}>{summary}</p>
 
-              <div className="flex flex-wrap gap-5 font-mono text-sm">
-                {[
-                  { icon: "📍", text: siteConfig.location },
-                  { icon: "🎓", text: "Humber College, Toronto" },
-                ].map((item) => (
-                  <span key={item.text} className="flex items-center gap-2" style={{ color: "var(--fg-dim)" }}>
-                    <span>{item.icon}</span> {item.text}
-                  </span>
-                ))}
+              {/* Key facts inline */}
+              <div
+                className="rounded-xl p-4"
+                style={{ border: "1px solid var(--border-subtle)", background: "rgba(99,102,241,0.03)" }}
+              >
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  {[
+                    { k: "Location", v: "Ahmedabad, India" },
+                    { k: "Education", v: "Humber College" },
+                    { k: "Status", v: "Open to Work" },
+                    { k: "Experience", v: "MERN · AWS · SQL" },
+                  ].map(({ k, v }) => (
+                    <div key={k}>
+                      <p className="font-mono text-[10px] tracking-[0.2em] uppercase mb-1" style={{ color: "var(--fg-dim)" }}>{k}</p>
+                      <p className="font-mono text-sm" style={{ color: "var(--fg-muted)" }}>{v}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Certifications */}
               <div>
-                <p className="mb-4 font-mono text-[11px] tracking-[0.3em] uppercase" style={{ color: "var(--indigo)" }}>
+                <p className="mb-3 font-mono text-[11px] tracking-[0.3em] uppercase" style={{ color: "var(--indigo)" }}>
                   Certifications
                 </p>
-                <ul className="space-y-3">
+                <ul className="space-y-2.5">
                   {certifications.map((cert) => (
                     <li key={cert} className="flex items-start gap-3">
-                      <span className="mt-0.5 flex-shrink-0 font-mono text-xs" style={{ color: "var(--indigo-bright)" }}>✓</span>
-                      <span className="text-sm" style={{ color: "var(--fg-muted)" }}>{cert}</span>
+                      <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{ background: "var(--indigo-bright)" }} />
+                      <span className="text-sm leading-relaxed" style={{ color: "var(--fg-muted)" }}>{cert}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Contact quick links */}
-              <div className="flex flex-wrap gap-3 pt-2">
+              {/* Links */}
+              <div className="flex flex-wrap gap-3">
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="rounded-md px-4 py-2 font-mono text-xs tracking-wide transition-all"
-                  style={{ border: "1px solid var(--border)", color: "var(--fg-muted)", background: "rgba(99,102,241,0.05)" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(99,102,241,0.5)"; (e.currentTarget as HTMLElement).style.color = "var(--fg)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.color = "var(--fg-muted)"; }}
+                  className="rounded-lg px-4 py-2 font-mono text-xs tracking-wide transition-all duration-150"
+                  style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--fg)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(99,102,241,0.4)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--fg-muted)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
                 >
                   {siteConfig.email}
                 </a>
@@ -99,10 +111,10 @@ export function About() {
                   href={siteConfig.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-md px-4 py-2 font-mono text-xs tracking-wide transition-all"
-                  style={{ border: "1px solid var(--border)", color: "var(--fg-muted)", background: "rgba(99,102,241,0.05)" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(99,102,241,0.5)"; (e.currentTarget as HTMLElement).style.color = "var(--fg)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.color = "var(--fg-muted)"; }}
+                  className="rounded-lg px-4 py-2 font-mono text-xs tracking-wide transition-all duration-150"
+                  style={{ border: "1px solid var(--border)", color: "var(--fg-muted)" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--fg)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(99,102,241,0.4)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--fg-muted)"; (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
                 >
                   LinkedIn ↗
                 </a>
