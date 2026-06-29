@@ -11,21 +11,21 @@ export function About() {
     <section id="about" className="section-pad relative overflow-hidden" style={{ background:"var(--bg-2)" }}>
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background:"linear-gradient(to right,transparent,var(--border-mid),transparent)" }} />
       <Lightfall
-        colors={["#c8864a", "#f0ebe5", "#e8a060"]}
-        backgroundColor="#1a0e08"
-        speed={0.35}
-        streakCount={3}
-        streakWidth={0.9}
-        streakLength={1.3}
-        glow={0.7}
-        density={0.5}
-        twinkle={0.6}
-        zoom={2.5}
-        backgroundGlow={0.25}
-        opacity={0.45}
-        mouseInteraction={true}
-        mouseStrength={0.35}
-        mouseRadius={0.9}
+        colors={["#c8864a", "#3d1f0a", "#1a0e08"]}
+        backgroundColor="#0c0b0a"
+        speed={0.3}
+        streakCount={2}
+        streakWidth={0.6}
+        streakLength={1.0}
+        glow={0.4}
+        density={0.4}
+        twinkle={0.4}
+        zoom={2.8}
+        backgroundGlow={0.1}
+        opacity={0.18}
+        mouseInteraction={false}
+        mouseStrength={0}
+        mouseRadius={0}
         mixBlendMode="screen"
         className="pointer-events-none"
       />
