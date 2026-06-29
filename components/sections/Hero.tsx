@@ -1,275 +1,137 @@
 "use client";
-
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, type Variants } from "framer-motion";
 import { siteConfig } from "@/content/site";
+import Aurora from "@/components/reactbits/Aurora";
+import ShinyText from "@/components/reactbits/ShinyText";
+import SplitText from "@/components/reactbits/SplitText";
+import Lightfall from "@/components/reactbits/Lightfall";
+import RotatingText from "@/components/reactbits/RotatingText";
 
 const ROLES = ["Frontend Developer", "MERN Stack Engineer", "AWS Cloud Practitioner", "UI/UX Craftsman"];
 
+function MagneticCTA({ href, children, primary, download }: { href: string; children: React.ReactNode; primary?: boolean; download?: boolean }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const x = useMotionValue(0); const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 200, damping: 18 });
+  const sy = useSpring(y, { stiffness: 200, damping: 18 });
+  return (
+    <motion.a ref={ref} href={href} download={download}
+      style={primary
+        ? { x: sx, y: sy, background: "var(--copper)", color: "#0c0b0a" }
+        : { x: sx, y: sy, border: "1px solid var(--border-mid)", color: "var(--muted)" }}
+      onMouseMove={e => { if (!ref.current) return; const r = ref.current.getBoundingClientRect(); x.set((e.clientX - r.left - r.width / 2) * 0.3); y.set((e.clientY - r.top - r.height / 2) * 0.3); }}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
+      whileTap={{ scale: 0.97 }}
+      className={`inline-flex items-center gap-2 rounded-lg px-6 py-3 font-mono text-sm font-medium tracking-wide transition-colors duration-150 ${!primary ? "btn-fill" : ""}`}>
+      {children}
+    </motion.a>
+  );
+}
+
 export function Hero() {
-  const containerRef = useRef<HTMLElement>(null);
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [displayed, setDisplayed] = useState("");
-  const [typing, setTyping] = useState(true);
+  const sectionRef = useRef<HTMLElement>(null);
+  const mouseX = useMotionValue(0); const mouseY = useMotionValue(0);
+  const sp = { stiffness: 40, damping: 22 };
+  const avatarX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), sp);
+  const avatarY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-6, 6]), sp);
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const spring = { stiffness: 50, damping: 22 };
-  const avatarX = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), spring);
-  const avatarY = useSpring(useTransform(mouseY, [-0.5, 0.5], [-6, 6]), spring);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  const onMove = (e: React.MouseEvent) => {
+    if (!sectionRef.current) return;
+    const r = sectionRef.current.getBoundingClientRect();
+    mouseX.set((e.clientX - r.left) / r.width - 0.5);
+    mouseY.set((e.clientY - r.top) / r.height - 0.5);
   };
 
-  useEffect(() => {
-    const role = ROLES[roleIndex];
-    if (typing) {
-      if (displayed.length < role.length) {
-        const t = setTimeout(() => setDisplayed(role.slice(0, displayed.length + 1)), 55);
-        return () => clearTimeout(t);
-      } else {
-        const t = setTimeout(() => setTyping(false), 2200);
-        return () => clearTimeout(t);
-      }
-    } else {
-      if (displayed.length > 0) {
-        const t = setTimeout(() => setDisplayed((d) => d.slice(0, d.length - 1)), 28);
-        return () => clearTimeout(t);
-      } else {
-        setRoleIndex((r) => (r + 1) % ROLES.length);
-        setTyping(true);
-      }
-    }
-  }, [displayed, typing, roleIndex]);
+  const cv: Variants = { hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } };
+  const iv: Variants = { hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } };
 
   return (
-    <section
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      className="relative flex h-[100dvh] min-h-[640px] w-full items-center overflow-hidden"
-    >
-      {/* Single, restrained ambient glow — not two competing orbs */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden
-        style={{
-          background: "radial-gradient(ellipse 70% 60% at 65% 50%, rgba(99,102,241,0.12) 0%, transparent 70%)",
-        }}
-      />
+    <section ref={sectionRef} onMouseMove={onMove}
+      className="relative flex min-h-[100dvh] w-full items-center overflow-hidden">
+      {/* Aurora base */}
+      <Aurora colorStops={["#c8864a", "#0c0b0a", "#3d1f0a", "#0c0b0a"]} blend={0.45} amplitude={1.1} speed={0.4} className="opacity-55" />
+      {/* Lightfall rays over avatar */}
+      <Lightfall rayCount={6} color="#c8864a" opacity={0.1} speed={0.35} origin={{ x: 0.75, y: 0.05 }} />
 
-      {/* Subtle dot grid — quieter than lines */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage: "radial-gradient(rgba(99,102,241,1) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-        aria-hidden
-      />
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-10 px-5 pt-28 pb-16 sm:px-8 sm:pt-32 lg:grid-cols-[58%_42%] lg:items-center lg:gap-6 lg:px-12 lg:pt-0 lg:pb-0">
+        <motion.div variants={cv} initial="hidden" animate="visible">
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-8 px-5 pt-28 pb-16 sm:px-8 sm:pt-32 lg:grid-cols-[55%_45%] lg:items-center lg:gap-8 lg:px-12 lg:pt-0 lg:pb-0">
-
-        {/* ── Left ── */}
-        <div>
-          {/* Open to work — small, confident, not over-styled */}
-          <motion.div
-            className="mb-6 inline-flex items-center gap-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ background: "rgba(99,102,241,0.7)" }} />
-              <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "var(--indigo-bright)" }} />
-            </span>
-            <span className="font-mono text-[11px] tracking-[0.3em] uppercase" style={{ color: "var(--indigo-bright)" }}>
-              Open to work
-            </span>
+          {/* ShinyText status */}
+          <motion.div variants={iv} className="mb-6">
+            <ShinyText text="● Available for work" speed={4} className="font-mono text-xs tracking-[0.28em] uppercase" />
           </motion.div>
 
-          {/* Name — the ONE signature element. Everything else is quiet. */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {/* "Hello I'm" removed — the name is big enough to not need a preamble */}
-            <h1
-              className="glitch font-display font-extrabold leading-[0.85] tracking-tight"
-              data-text="DARSHIL SHAH"
-              style={{ color: "var(--fg)", fontSize: "clamp(3.2rem, 6vw, 6rem)" }}
-            >
-              DARSHIL
-              <br />
-              <span style={{ color: "var(--indigo-bright)" }}>SHAH</span>
-            </h1>
+          {/* SplitText name */}
+          <div>
+            <SplitText text="DARSHIL" className="hero-name" splitType="chars" delay={55} duration={0.65}
+              from={{ opacity: 0, y: 55, rotateX: -35 }} to={{ opacity: 1, y: 0, rotateX: 0 }} rootMargin="0px" />
+            <SplitText text="SHAH" className="hero-name hero-name-accent" splitType="chars" delay={55} duration={0.65}
+              from={{ opacity: 0, y: 55, rotateX: -35 }} to={{ opacity: 1, y: 0, rotateX: 0 }} rootMargin="0px" />
+          </div>
+
+          {/* RotatingText roles — replaces typewriter, cleaner */}
+          <motion.div variants={iv} className="mt-6 flex items-center gap-2 font-mono text-sm sm:text-base" style={{ color: "var(--muted)" }}>
+            <span style={{ color: "var(--copper)", opacity: 0.7 }}>&gt;</span>
+            <RotatingText
+              texts={ROLES}
+              interval={2600}
+              transition="slide"
+              className="overflow-hidden"
+              textClassName="font-mono text-sm sm:text-base"
+            />
+            <span className="blink" style={{ color: "var(--copper)" }}>_</span>
           </motion.div>
 
-          {/* Role — single line, monospaced, grounded */}
-          <motion.div
-            className="mt-5"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <span className="font-mono text-base sm:text-lg" style={{ color: "var(--fg-muted)" }}>
-              <span style={{ color: "var(--amber)" }}>&gt; </span>
-              {displayed}
-              <span className="cursor-blink" style={{ color: "var(--indigo-bright)" }}>_</span>
-            </span>
-          </motion.div>
-
-          {/* Stats — clean, no borders, let the type do the work */}
-          <motion.div
-            className="mt-10 grid grid-cols-3 gap-x-6 gap-y-4 sm:flex sm:flex-wrap sm:gap-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.65 }}
-          >
-            {[
-              { value: "4×", label: "Dean's Honour Roll" },
-              { value: "AWS", label: "Certified" },
-              { value: "MERN", label: "Stack" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <p className="font-display text-2xl font-extrabold leading-none" style={{ color: "var(--fg)" }}>
-                  {stat.value}
-                </p>
-                <p className="mt-1 font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--fg-dim)" }}>
-                  {stat.label}
-                </p>
+          {/* Stats */}
+          <motion.div variants={iv} className="mt-10 grid grid-cols-3 gap-4 sm:flex sm:gap-10">
+            {[{ v: "4×", l: "Honour Roll" }, { v: "AWS", l: "Certified" }, { v: "MERN", l: "Stack" }].map(s => (
+              <div key={s.l}>
+                <p className="font-display text-2xl font-extrabold leading-none" style={{ color: "var(--ink)" }}>{s.v}</p>
+                <p className="mt-1 font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: "var(--dim)" }}>{s.l}</p>
               </div>
             ))}
           </motion.div>
 
-          {/* CTA — primary fills, secondary is a ghost. Clear hierarchy. */}
-          <motion.div
-            className="mt-10 flex flex-wrap gap-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            <a
-              href="#contact"
-              className="group inline-flex items-center gap-2 rounded-lg px-6 py-3 font-mono text-sm font-medium tracking-wide transition-all duration-200"
-              style={{ background: "var(--indigo)", color: "#fff" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--indigo-bright)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "var(--indigo)"; }}
-            >
-              Hire Me
-              <span className="transition-transform group-hover:translate-x-0.5">→</span>
-            </a>
-            <a
-              href={siteConfig.resumeUrl}
-              download
-              className="inline-flex items-center gap-2 rounded-lg px-6 py-3 font-mono text-sm font-medium tracking-wide transition-all duration-200"
-              style={{ border: "1px solid rgba(99,102,241,0.3)", color: "var(--fg-muted)" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(99,102,241,0.6)";
-                (e.currentTarget as HTMLElement).style.color = "var(--fg)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(99,102,241,0.3)";
-                (e.currentTarget as HTMLElement).style.color = "var(--fg-muted)";
-              }}
-            >
-              Resume ↓
-            </a>
+          {/* Magnetic CTAs */}
+          <motion.div variants={iv} className="mt-10 flex flex-wrap gap-3">
+            <MagneticCTA href="#contact" primary>Hire Me →</MagneticCTA>
+            <MagneticCTA href={siteConfig.resumeUrl} download>Resume ↓</MagneticCTA>
           </motion.div>
-        </div>
+        </motion.div>
 
-        {/* ── Right: avatar ── clean, no competing decorations */}
-        <motion.div
-          className="flex items-center justify-center lg:justify-end"
-          style={{ minWidth: 0 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <motion.div
-            className="relative"
-            style={{ x: avatarX, y: avatarY, flexShrink: 0 }}
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            {/* Single clean glow — behind the avatar only */}
-            <div
-              className="pointer-events-none absolute inset-0 -z-10"
-              style={{
-                background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(99,102,241,0.35) 0%, transparent 70%)",
-                transform: "scale(1.2)",
-              }}
-              aria-hidden
-            />
-
-            <Image
-              src="/assets/avatar-3d.png"
-              alt="Darshil Shah 3D avatar"
-              width={600}
-              height={600}
-              priority
-              className="h-auto w-[min(72vw,300px)] sm:w-[min(60vw,340px)] lg:w-[min(38vw,400px)] xl:w-[min(36vw,440px)]"
-              style={{
-                mixBlendMode: "screen",
-                filter: "drop-shadow(0 0 40px rgba(99,102,241,0.4))",
-                display: "block",
-              }}
-            />
-
-            {/* Only 2 floating cards — location & AWS. No more. */}
-            <motion.div
-              className="absolute -left-2 bottom-[18%] rounded-xl px-3 py-2 lg:-left-6"
-              style={{
-                background: "rgba(8,8,16,0.88)",
-                border: "1px solid rgba(99,102,241,0.25)",
-                backdropFilter: "blur(16px)",
-              }}
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.1 }}
-            >
-              <p className="font-mono text-[10px] tracking-wider" style={{ color: "var(--fg-dim)" }}>📍 Available</p>
-              <p className="font-mono text-xs font-medium" style={{ color: "var(--fg)" }}>Ahmedabad, India</p>
+        {/* Avatar */}
+        <motion.div className="flex items-center justify-center lg:justify-end" style={{ minWidth: 0 }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.div className="relative" style={{ x: avatarX, y: avatarY, flexShrink: 0 }}
+            animate={{ y: [0, -10, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}>
+            <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden
+              style={{ background: "radial-gradient(ellipse 65% 60% at 50% 52%, rgba(200,134,74,0.25) 0%, transparent 70%)", transform: "scale(1.2)" }} />
+            <Image src="/assets/avatar-3d.png" alt="Darshil Shah" width={600} height={600} priority
+              className="h-auto w-[min(72vw,280px)] sm:w-[min(58vw,320px)] lg:w-[min(36vw,390px)] xl:w-[min(34vw,420px)]"
+              style={{ mixBlendMode: "screen", display: "block" }} />
+            <motion.div className="absolute -left-2 bottom-[18%] rounded-xl px-3 py-2 lg:-left-6"
+              style={{ background: "var(--bg-card)", border: "1px solid var(--border-mid)" }}
+              initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.1 }}>
+              <p className="font-mono text-[10px] tracking-wider uppercase" style={{ color: "var(--dim)" }}>Available</p>
+              <p className="font-mono text-xs font-semibold" style={{ color: "var(--muted)" }}>Ahmedabad, India</p>
             </motion.div>
-
-            <motion.div
-              className="absolute right-0 top-[10%] rounded-xl px-3 py-2"
-              style={{
-                background: "rgba(8,8,16,0.88)",
-                border: "1px solid rgba(245,158,11,0.25)",
-                backdropFilter: "blur(16px)",
-              }}
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.3 }}
-            >
-              <p className="font-mono text-[10px] tracking-wider" style={{ color: "var(--amber)" }}>☁ AWS</p>
-              <p className="font-mono text-xs font-medium" style={{ color: "var(--fg)" }}>Certified</p>
+            <motion.div className="absolute right-0 top-[10%] rounded-xl px-3 py-2"
+              style={{ background: "var(--bg-card)", border: "1px solid rgba(200,134,74,0.25)" }}
+              initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.3 }}>
+              <p className="font-mono text-[10px] tracking-wider uppercase" style={{ color: "var(--copper)" }}>AWS</p>
+              <p className="font-mono text-xs font-semibold" style={{ color: "var(--muted)" }}>Certified</p>
             </motion.div>
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Scroll cue — minimal */}
-      <motion.a
-        href="#about"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6 }}
-      >
-        <motion.div
-          className="h-9 w-px"
-          style={{ background: "linear-gradient(to bottom, rgba(99,102,241,0.5), transparent)" }}
-          animate={{ scaleY: [0.4, 1, 0.4], opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-        <span className="font-mono text-[10px] tracking-[0.35em] uppercase" style={{ color: "var(--fg-dim)" }}>scroll</span>
+      <motion.a href="#about" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }}>
+        <motion.div className="h-8 w-px" style={{ background: "linear-gradient(to bottom,var(--dim),transparent)" }}
+          animate={{ scaleY: [0.3, 1, 0.3], opacity: [0.3, 0.7, 0.3] }} transition={{ duration: 2.2, repeat: Infinity }} />
+        <span className="font-mono text-[10px] tracking-[0.4em] uppercase" style={{ color: "var(--dim)" }}>scroll</span>
       </motion.a>
     </section>
   );

@@ -1,100 +1,75 @@
 "use client";
-
 import { motion } from "framer-motion";
 import { skills } from "@/content/site";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import ScrambledText from "@/components/reactbits/ScrambledText";
 
-// Real tech icons as SVG paths — not arbitrary unicode symbols
-const categoryMeta: Record<string, { color: string; desc: string }> = {
-  Languages:          { color: "var(--amber)",        desc: "What I write in" },
-  Frontend:           { color: "var(--indigo-bright)", desc: "What users see" },
-  Backend:            { color: "var(--indigo-bright)", desc: "What powers it" },
-  Databases:          { color: "var(--amber)",         desc: "Where data lives" },
-  "Cloud & DevOps":   { color: "var(--indigo-bright)", desc: "How it's shipped" },
-  "Auth & Soft Skills":{ color: "var(--amber)",        desc: "How it's secured" },
+const categoryDesc: Record<string, string> = {
+  Languages: "Write in", Frontend: "Build with", Backend: "Power with",
+  Databases: "Store in", "Cloud & DevOps": "Ship via", "Auth & Soft Skills": "Secure with",
 };
 
-const allSkills = [
+const STRIP_ITEMS = [
   "React.js", "Node.js", "TypeScript", "Python", "MongoDB", "PostgreSQL",
-  "Docker", "AWS", "Express.js", "REST APIs", "Auth0", "JWT",
-  "Git", "HTML5", "CSS3", "Chart.js", "JavaScript", "MariaDB",
+  "Docker", "AWS", "Express.js", "REST APIs", "Auth0", "JWT", "Git", "HTML5", "CSS3", "Chart.js",
 ];
 
 export function Skills() {
   return (
-    <section id="skills" className="section-pad relative overflow-hidden" style={{ background: "var(--bg)" }}>
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(245,158,11,0.15), transparent)" }} />
+    <section id="skills" className="section-pad relative" style={{ background: "var(--bg)" }}>
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(to right,transparent,var(--border-mid),transparent)" }} />
+      <div className="mx-auto max-w-7xl">
+        <SectionHeading title="Skills" />
 
-      <div className="relative z-10 mx-auto max-w-7xl">
-        <SectionHeading num="02" label="Expertise" title="Skills & Tech" />
-
-        {/* Scrolling strip — shows breadth at a glance */}
-        <div className="mb-14 overflow-hidden rounded-xl" style={{ border: "1px solid var(--border-subtle)" }}>
-          <div className="flex py-3 bg-[rgba(99,102,241,0.02)]">
-            <div className="tag-strip flex shrink-0 gap-3">
-              {[...allSkills, ...allSkills].map((skill, i) => (
-                <span
-                  key={i}
-                  className="inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-1.5 font-mono text-xs whitespace-nowrap"
-                  style={{ color: "var(--fg-muted)" }}
-                >
-                  <span className="h-1 w-1 rounded-full flex-shrink-0" style={{ background: "var(--indigo)" }} />
+        {/* CSS marquee strip — pauses on hover, no JS re-renders */}
+        <div className="mb-12 overflow-hidden" style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+          <div className="flex py-3">
+            <div className="strip flex shrink-0 gap-8" aria-hidden>
+              {[...STRIP_ITEMS, ...STRIP_ITEMS].map((skill, i) => (
+                <span key={`a-${i}`} className="inline-flex shrink-0 items-center gap-3 font-mono text-xs whitespace-nowrap" style={{ color: "var(--dim)" }}>
+                  <span className="h-px w-3 flex-shrink-0" style={{ background: "var(--copper)", opacity: 0.5 }} />
                   {skill}
                 </span>
               ))}
             </div>
           </div>
         </div>
-
-        {/* Skill groups — description replaces meaningless icon */}
-        <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-3" style={{ background: "var(--border-subtle)", borderRadius: "16px", overflow: "hidden" }}>
-          {skills.map((group, i) => {
-            const meta = categoryMeta[group.category] ?? { color: "var(--indigo)", desc: "" };
-            return (
-              <RevealOnScroll key={group.category} delay={i * 0.06}>
-                <motion.div
-                  className="group flex h-full flex-col p-6 transition-colors duration-200"
-                  style={{ background: "var(--bg-card)" }}
-                  whileHover="hover"
-                  variants={{ hover: { background: "rgba(99,102,241,0.05)" } }}
-                >
-                  {/* Header: category name + what it means */}
-                  <div className="mb-5 flex items-start justify-between gap-2">
-                    <div>
-                      <h3 className="font-display text-sm font-bold" style={{ color: "var(--fg)" }}>
-                        {group.category}
-                      </h3>
-                      <p className="mt-0.5 font-mono text-[10px] tracking-wider uppercase" style={{ color: meta.color, opacity: 0.8 }}>
-                        {meta.desc}
-                      </p>
-                    </div>
-                    {/* Item count — structural information, not decoration */}
-                    <span className="font-mono text-xs tabular-nums" style={{ color: "var(--fg-dim)" }}>
-                      {group.items.length}
-                    </span>
+        <div className="grid gap-0 lg:grid-cols-[1fr_2fr]" style={{ border: "1px solid var(--border)", borderRadius: "16px", overflow: "hidden" }}>
+          <div style={{ borderRight: "1px solid var(--border)" }}>
+            {skills.map((group, i) => (
+              <RevealOnScroll key={group.category} delay={i * 0.04}>
+                <div className="flex items-start justify-between px-5 py-4 transition-colors duration-150"
+                  style={{ borderBottom: i < skills.length - 1 ? "1px solid var(--border)" : "none", background: "var(--bg-card)" }}>
+                  <div>
+                    {/* ScrambledText on category names */}
+                    <p className="font-mono text-sm font-medium" style={{ color: "var(--ink)" }}>
+                      <ScrambledText text={group.category} trigger="inview" speed={30} revealDelay={600} />
+                    </p>
+                    <p className="mt-0.5 font-mono text-[10px] uppercase tracking-wider" style={{ color: "var(--dim)" }}>{categoryDesc[group.category]}</p>
                   </div>
-
-                  {/* Skills as a clean list */}
-                  <div className="flex flex-wrap gap-2">
-                    {group.items.map((skill) => (
-                      <span
-                        key={skill}
-                        className="rounded-md px-3 py-1.5 font-mono text-xs"
-                        style={{
-                          background: "rgba(255,255,255,0.03)",
-                          border: "1px solid var(--border-subtle)",
-                          color: "var(--fg-muted)",
-                        }}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
+                  <span className="font-mono text-xs tabular-nums" style={{ color: "var(--copper)", opacity: 0.7 }}>{group.items.length}</span>
+                </div>
               </RevealOnScroll>
-            );
-          })}
+            ))}
+          </div>
+          <div className="p-6 md:p-8" style={{ background: "var(--bg-2)" }}>
+            <div className="flex flex-wrap gap-2">
+              {skills.flatMap(g => g.items).map((skill, i) => (
+                <motion.span key={skill}
+                  className="rounded-lg px-3 py-1.5 font-mono text-xs cursor-default"
+                  style={{ background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--muted)" }}
+                  initial={{ opacity: 0, scale: 0.88 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.012, duration: 0.3 }}
+                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ borderColor: "var(--border-mid)", color: "var(--ink)" }}>
+                  {skill}
+                </motion.span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
