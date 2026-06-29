@@ -6,7 +6,6 @@ import { siteConfig } from "@/content/site";
 import Aurora from "@/components/reactbits/Aurora";
 import ShinyText from "@/components/reactbits/ShinyText";
 import SplitText from "@/components/reactbits/SplitText";
-import Lightfall from "@/components/reactbits/Lightfall";
 import RotatingText from "@/components/reactbits/RotatingText";
 
 const ROLES = ["Frontend Developer", "MERN Stack Engineer", "AWS Cloud Practitioner", "UI/UX Craftsman"];
@@ -52,8 +51,6 @@ export function Hero() {
       className="relative flex min-h-[100dvh] w-full items-center overflow-hidden">
       {/* Aurora base */}
       <Aurora colorStops={["#c8864a", "#0c0b0a", "#3d1f0a", "#0c0b0a"]} blend={0.45} amplitude={1.1} speed={0.4} className="opacity-55" />
-      {/* Lightfall rays over avatar */}
-      <Lightfall rayCount={6} color="#c8864a" opacity={0.1} speed={0.35} origin={{ x: 0.75, y: 0.05 }} />
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-10 px-5 pt-28 pb-16 sm:px-8 sm:pt-32 lg:grid-cols-[58%_42%] lg:items-center lg:gap-6 lg:px-12 lg:pt-0 lg:pb-0">
         <motion.div variants={cv} initial="hidden" animate="visible">
