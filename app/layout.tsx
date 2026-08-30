@@ -7,7 +7,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: { default:`${siteConfig.name} | ${siteConfig.title}`, template:`%s | ${siteConfig.name}` },
   description: summary,
-  keywords: ["Darshil Shah","Frontend Developer","React","MERN Stack","AWS"],
+  keywords: ["Darshil Shah","Data Analyst", "Python", "SQL", "Power BI", "Tableau","AWS"],
   authors: [{ name: siteConfig.name }],
 };
 

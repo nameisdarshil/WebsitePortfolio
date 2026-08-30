@@ -51,7 +51,9 @@ export default function Particles({ count=50, spread=7, speed=0.03, colors=["#c8
         const y1=y*cx-z*sx, z1=y*sx+z*cx;
         const x2=x*cy+z1*sy, z2=-x*sy+z1*cy;
         y=y1; x=x2; z=z2;
-        const pr=18/(18+z), sx2=x*pr*(W/8)+W/2, sy2=y*pr*(H/8)+H/2, sr=p.size*pr;
+        const pr=18/(18+z);
+        if (pr<=0) return;
+        const sx2=x*pr*(W/8)+W/2, sy2=y*pr*(H/8)+H/2, sr=p.size*pr;
         if (sx2<-sr||sx2>W+sr||sy2<-sr||sy2>H+sr) return;
         const [r,g,b]=p.rgb;
         ctx.beginPath(); ctx.arc(sx2,sy2,sr,0,Math.PI*2);

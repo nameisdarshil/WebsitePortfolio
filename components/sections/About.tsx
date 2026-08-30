@@ -51,7 +51,7 @@ export function About() {
             <div className="space-y-7">
               <p className="text-lg leading-[1.78]" style={{ color:"var(--muted)", maxWidth:"58ch" }}>{summary}</p>
               <div className="grid grid-cols-2 gap-x-8 gap-y-5">
-                {[{k:"Location",v:"Ahmedabad, India"},{k:"Education",v:"Humber College"},{k:"Status",v:"Open to work"},{k:"Stack",v:"MERN · AWS · SQL"}].map(({k,v})=>(
+                {[{k:"Location",v:"Ahmedabad, India"},{k:"Education",v:"Humber College"},{k:"Status",v:"Open to work"},{k:"Stack",v:"Python · SQL · Power BI"}].map(({k,v})=>(
                   <div key={k}>
                     <p className="font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color:"var(--dim)" }}>{k}</p>
                     <p className="mt-0.5 font-mono text-xs" style={{ color:"var(--muted)" }}>{v}</p>

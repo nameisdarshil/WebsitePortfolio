@@ -8,7 +8,7 @@ import ShinyText from "@/components/reactbits/ShinyText";
 import SplitText from "@/components/reactbits/SplitText";
 import RotatingText from "@/components/reactbits/RotatingText";
 
-const ROLES = ["Frontend Developer", "MERN Stack Engineer", "AWS Cloud Practitioner", "UI/UX Craftsman"];
+const ROLES = ["Data Analyst", "Python & SQL Analyst", "BI & Dashboarding", "AWS Cloud Practitioner" ];
 
 function MagneticCTA({ href, children, primary, download }: { href: string; children: React.ReactNode; primary?: boolean; download?: boolean }) {
   const ref = useRef<HTMLAnchorElement>(null);
@@ -83,7 +83,7 @@ export function Hero() {
 
           {/* Stats */}
           <motion.div variants={iv} className="mt-10 grid grid-cols-3 gap-4 sm:flex sm:gap-10">
-            {[{ v: "4×", l: "Honour Roll" }, { v: "AWS", l: "Certified" }, { v: "MERN", l: "Stack" }].map(s => (
+            {[{ v: "4×", l: "Honour Roll" }, { v: "AWS", l: "Certified" }, { v: "Python", l: "& SQL" }].map(s => (
               <div key={s.l}>
                 <p className="font-display text-2xl font-extrabold leading-none" style={{ color: "var(--ink)" }}>{s.v}</p>
                 <p className="mt-1 font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: "var(--dim)" }}>{s.l}</p>
