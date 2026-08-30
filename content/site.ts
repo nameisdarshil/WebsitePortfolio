@@ -9,7 +9,7 @@ export const siteConfig = {
   resumeUrl: "/DARSHIL_S_RESUME.pdf",
 } as const;
 
-export const summary = `Data Analyst-focused one (EDA, data cleaning, statistical modeling, Python/SQL/BI)`;
+export const summary = `Data Analyst with hands-on experience turning raw, messy datasets into clear, actionable insight. Currently at Atopic Laboratories, analyzing sales, prescriber, and territory-level performance data across multiple pharmaceutical product lines using SQL and Excel. Comfortable across the full analytics workflow — data cleaning, exploratory data analysis (EDA), statistical modeling, and dashboarding — with Python (Pandas, NumPy, Matplotlib, Seaborn), SQL, and BI tools like Power BI and Tableau. Postgraduate graduate from Humber College, Toronto, with Dean's Honour Roll recognition across four consecutive terms. Focused on finding the story inside the data and presenting it in a way stakeholders can actually act on.`;
 
 export const skills = [
   {
